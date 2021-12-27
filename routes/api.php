@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\SignUpController;
 use Illuminate\Http\Request;
@@ -28,3 +29,8 @@ Route::post('/logout',  [LoginController::class, 'logout'])->middleware('auth:sa
 
 Route::resource('products', ProductsController::class);
 Route::get('products-for-sale', [ProductsController::class, 'productsForSale']);
+
+
+Route::post('change-order-status', [OrdersController::class, 'changeOrderStatus']);
+Route::get('order-deliveries', [OrdersController::class, 'deliveredOrders']);
+Route::resource('orders', OrdersController::class);

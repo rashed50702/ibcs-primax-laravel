@@ -16,7 +16,8 @@ class Order extends Model
         'customer_id',
         'order_date',
         'status',
-        'is_moved'
+        'is_moved',
+        'is_new'
     ];
 
     public function customer(){

@@ -55,6 +55,7 @@ class OrdersController extends Controller
             $order = new Order();
             $order->customer_id = $request->customer_id;
             $order->order_date  = Carbon::now();
+            $order->is_new  = 1;
             $order->save();
 
             $orderProducts = [];
@@ -113,7 +114,8 @@ class OrdersController extends Controller
         try {
             $id = $request->order_id;
             $data = Order::find($id);
-            $data->status       = $request->new_status;
+            $data->status = $request->new_status;
+            $data->is_new = 0;
             $data->save();            
             return response()->json(['status' => 'success', 'message' => 'Status changed successfully!'], 201);
         }catch (\Exception $exception) {
@@ -137,5 +139,10 @@ class OrdersController extends Controller
     public function deliveredOrders()
     {
         return OrderDelivery::with('order')->get();
+    }
+
+    public function newOrdersCount()
+    {
+        return Order::where('is_new', 1)->count();
     }
 }

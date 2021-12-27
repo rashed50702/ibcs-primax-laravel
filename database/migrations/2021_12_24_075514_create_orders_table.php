@@ -21,6 +21,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone')->nullable();
             $table->integer('status')->default(0); //0(pending), 1(delivered), 2(cancelled)
             $table->integer('is_moved')->default(0); //is moved to deliveries table after delivery? 0 false, 1 true
+            $table->integer('is_new')->default(1); //is moved to deliveries table after delivery? 0 false, 1 true
             $table->timestamps();
             
             $table->foreign('customer_id')->references('id')->on('users');

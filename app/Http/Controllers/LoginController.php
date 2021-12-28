@@ -25,7 +25,8 @@ class LoginController extends Controller
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        // return $user->createToken($request->device_name)->plainTextToken;
+        return response()->json(['is_admin' => $user->is_admin, 'textToken' => $user->createToken($request->device_name)->plainTextToken], 201);
     }
 
     public function logout(Request $request)

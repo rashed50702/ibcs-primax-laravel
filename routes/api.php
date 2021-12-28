@@ -34,4 +34,5 @@ Route::get('products-for-sale', [ProductsController::class, 'productsForSale']);
 Route::post('change-order-status', [OrdersController::class, 'changeOrderStatus']);
 Route::get('order-deliveries', [OrdersController::class, 'deliveredOrders']);
 Route::get('new-orders-count', [OrdersController::class, 'newOrdersCount']);
+Route::get('my-orders/{id}', [OrdersController::class, 'myOrders']);
 Route::resource('orders', OrdersController::class);

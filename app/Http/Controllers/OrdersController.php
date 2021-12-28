@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderDelivery;
 use App\Models\OrderProduct;
-use Illuminate\Http\Request;
+use App\Models\Product;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Response;
+use DB;
 
 class OrdersController extends Controller
 {
@@ -113,10 +115,21 @@ class OrdersController extends Controller
     {
         try {
             $id = $request->order_id;
-            $data = Order::find($id);
-            $data->status = $request->new_status;
+            $status = $request->new_status;
+            
+            $data = Order::with('orderproduct')->find($id);
+
+            //check if product is delivery, 1 for delivery status
+            if ($status == 1) {
+                foreach($data->orderproduct as $item){
+                    $qty = Product::where('id', $item['product_id'])->first();
+                    Product::where('id', $item['product_id'])->update(['qty' => $qty->qty - $item['quantity']]);
+                }
+            }
+            
+            $data->status = $status;
             $data->is_new = 0;
-            $data->save();            
+            $data->save();
             return response()->json(['status' => 'success', 'message' => 'Status changed successfully!'], 201);
         }catch (\Exception $exception) {
             return response()->json(['status' => 'error', 'message' => 'Error', 'errors' => $exception->errors()], 422);
@@ -144,5 +157,10 @@ class OrdersController extends Controller
     public function newOrdersCount()
     {
         return Order::where('is_new', 1)->count();
+    }
+
+    public function myOrders($id)
+    {
+        return Order::where('customer_id', $id)->get();
     }
 }

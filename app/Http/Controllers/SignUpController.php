@@ -10,15 +10,16 @@ class SignUpController extends Controller
 {
     public function signup(Request $request){
         $request->validate([
-                'name' => ['required'],
-                'email' => ['required', 'email', 'unique:users'],
-                'password' => ['required', 'min:8', 'confirmed']
-            ]);
+            'name' => ['required'],
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'min:8', 'confirmed']
+        ]);
 
-            User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
+        User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'is_admin' => 0,
+            'password' => Hash::make($request->password)
+        ]);
     }
 }

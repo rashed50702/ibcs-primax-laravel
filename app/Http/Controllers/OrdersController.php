@@ -163,4 +163,9 @@ class OrdersController extends Controller
     {
         return Order::where('customer_id', $id)->get();
     }
+
+    public function orderDetails($id)
+    {
+        return OrderProduct::with('product')->where('order_id', $id)->get();
+    }
 }
